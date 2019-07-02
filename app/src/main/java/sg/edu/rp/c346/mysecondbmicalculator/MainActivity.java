@@ -62,16 +62,17 @@ public class MainActivity extends AppCompatActivity {
                     //step1b obtain an instance of the SharedPreference Editor
                     SharedPreferences.Editor prefEdit = pref.edit();
                     //step1c Add the key-value pair
+                    float fBmi2=Float.parseFloat(String.format("%.3f", fBmi));
 
                     prefEdit.putString("outcome", oc);
                     prefEdit.putString("date", datetime);
-                    prefEdit.putFloat("bmi", fBmi);
+                    prefEdit.putFloat("bmi", fBmi2);
 
                     //step1d: Call commit to save changes into sharedPreferences
                     prefEdit.commit();
                     edHe.setText("");
                     edWe.setText("");
-                    tvCal.setText("Last Calculated BMI:" + fBmi);
+                    tvCal.setText("Last Calculated BMI:" + fBmi2);
                     tvDate.setText("Last Calculated Date:" + datetime);
                     tvInfo.setText(oc);
 
