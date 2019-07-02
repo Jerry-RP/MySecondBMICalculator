@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,39 +42,40 @@ public class MainActivity extends AppCompatActivity {
                         now.get(Calendar.YEAR) + " " +
                         now.get(Calendar.HOUR_OF_DAY) + ":" +
                         now.get(Calendar.MINUTE);
+                if((edWe.getText().toString().isEmpty())||(edHe.getText().toString().isEmpty())) {}
+                else{
+                    float fBmi = (Float.parseFloat(edWe.getText().toString())) / ((Float.parseFloat(edHe.getText().toString())) * (Float.parseFloat(edHe.getText().toString())));
+                    // Code for the action
+                    if (fBmi < 18.5) {
+                        oc = "You are underweight";
+                    } else if (fBmi < 25) {
+                        oc = "Your BMI is normal";
+                    } else if (fBmi < 30) {
+                        oc = "You are overweight";
+                    } else {
+                        oc = "You are obese";
+                    }
 
-                float fBmi=(Float.parseFloat(edWe.getText().toString()))/((Float.parseFloat(edHe.getText().toString()))*(Float.parseFloat(edHe.getText().toString())));
-                // Code for the action
-                if(fBmi<18.5){
-                    oc="You are underweight";
-                }else if(fBmi<25){
-                    oc="Your BMI is normal";
-                }else if(fBmi<30){
-                    oc="You are overweight";
-                }else{
-                    oc="You are obese";
+                    //Step1a Obtain an instance of the SharedPreferences
+                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+
+                    //step1b obtain an instance of the SharedPreference Editor
+                    SharedPreferences.Editor prefEdit = pref.edit();
+                    //step1c Add the key-value pair
+
+                    prefEdit.putString("outcome", oc);
+                    prefEdit.putString("date", datetime);
+                    prefEdit.putFloat("bmi", fBmi);
+
+                    //step1d: Call commit to save changes into sharedPreferences
+                    prefEdit.commit();
+                    edHe.setText("");
+                    edWe.setText("");
+                    tvCal.setText("Last Calculated BMI:" + fBmi);
+                    tvDate.setText("Last Calculated Date:" + datetime);
+                    tvInfo.setText(oc);
+
                 }
-
-                //Step1a Obtain an instance of the SharedPreferences
-                SharedPreferences pref= PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-
-                //step1b obtain an instance of the SharedPreference Editor
-                SharedPreferences.Editor prefEdit=pref.edit();
-                //step1c Add the key-value pair
-
-                prefEdit.putString("outcome",oc);
-                prefEdit.putString("date",datetime);
-                prefEdit.putFloat("bmi",fBmi);
-
-                //step1d: Call commit to save changes into sharedPreferences
-                prefEdit.commit();
-                edHe.setText("");
-                edWe.setText("");
-                tvCal.setText("Last Calculated BMI:"+fBmi);
-                tvDate.setText("Last Calculated Date:"+datetime);
-                tvInfo.setText(oc);
-
-
             }
         });
         btnReset.setOnClickListener(new View.OnClickListener() {
